@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Connection } from 'typeorm';
-import { User } from 'src/entity/User.entity';
+import { User } from '../entity/User.entity';
 import { createHmac } from 'crypto';
 import { GlobalConfig } from '../config';
 import { MailerService } from '@nest-modules/mailer';

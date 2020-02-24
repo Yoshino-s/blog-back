@@ -4,11 +4,8 @@ services:
     build: .
     container_name: web
     restart: always
-    volumes:
-      - ./src:/app/src
     ports:
-      - "80:3000"
-      - "9615:9615"
+      - "3000:3000"
     environment: 
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: password
@@ -41,7 +38,7 @@ services:
     expose:
       - 3306
     environment:
-      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: TEST
     volumes:
       - ./mysql/data:/var/lib/mysql

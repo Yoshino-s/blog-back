@@ -1,5 +1,6 @@
 # compiled output
 dist
+dist-single
 node_modules
 
 # Logs
@@ -36,3 +37,6 @@ coverage
 # Secret
 
 src/secret/secretConfig.ts
+
+mysql/data/*
+redis/data/*

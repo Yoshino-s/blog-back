@@ -1,6 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
 import { createConnection } from 'typeorm';
 import { MysqlConfig } from '../config';
+import { User } from '../entity/User.entity';
 
 export const DBService: FactoryProvider = {
   provide: 'DB',
@@ -14,9 +15,7 @@ export const DBService: FactoryProvider = {
       'database': MysqlConfig.database,
       'synchronize': true,
       'logging': true,
-      'entities': [
-        __dirname + '/../entity/**/*.entity{.js,.ts}'
-      ]
+      'entities': [User]
     });
     return db;
   }

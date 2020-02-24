@@ -2,9 +2,7 @@ import { Controller, Body, Post, UsePipes, ValidationPipe, BadRequestException, 
 import { UserService } from './user.service';
 import { RegisterUserDto } from './DTO/register-user.dto';
 import { ApiCreatedResponse, ApiBadRequestResponse } from '@nestjs/swagger';
-import { LoginUserDto } from './DTO/login-user-dto';
 import { AuthGuard } from '@nestjs/passport';
-import {FastifyRequest} from 'fastify';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../entity/User.entity';
 
