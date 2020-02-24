@@ -17,6 +17,10 @@ module.exports = {
     jest: true,
   },
   rules: {
+    quotes: ['warn', 'single'],
+    '@typescript-eslint/indent': ['warn', 2],
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
