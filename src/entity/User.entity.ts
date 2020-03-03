@@ -1,5 +1,6 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { Base } from './Base';
+import { Content } from './Content.entity';
 
 export enum USER_GROUP {
   NORMAL, ADMIN, ROOT
@@ -31,4 +32,7 @@ export class User extends Base {
     default: USER_GROUP.NORMAL
   })
   userGroup: USER_GROUP;
+
+  @OneToMany(() => Content, content => content.postBy)
+  contents: Content[];
 }

@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @Inject('DB') private readonly connection: Connection,
+    @Inject('MYSQL') private readonly connection: Connection,
   ) { }
   async validateUser(name: string, password: string): Promise<User | null> {
     const r = await this.connection.getRepository(User).findOne({
@@ -19,13 +19,11 @@ export class AuthService {
     return r;
   }
 
-  async login(user: User) {
+  getJwt(user: User) {
     const payload = {
       username: user.name,
       sub: user.id
     };
-    return {
-      jwt: this.jwtService.sign(payload)
-    }
+    return this.jwtService.sign(payload);
   }
 }

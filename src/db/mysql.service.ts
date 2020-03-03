@@ -2,11 +2,12 @@ import { FactoryProvider } from '@nestjs/common';
 import { createConnection } from 'typeorm';
 import { MysqlConfig } from '../config';
 import { User } from '../entity/User.entity';
+import { Content } from 'src/entity/Content.entity';
 
-export const DBService: FactoryProvider = {
-  provide: 'DB',
+export const MysqlService: FactoryProvider = {
+  provide: 'MYSQL',
   useFactory: async () => {
-    const db = await createConnection({
+    const mysql = await createConnection({
       'type': 'mysql',
       'host': MysqlConfig.host,
       'port': MysqlConfig.port,
@@ -15,9 +16,9 @@ export const DBService: FactoryProvider = {
       'database': MysqlConfig.database,
       'synchronize': true,
       'logging': true,
-      'entities': [User]
+      'entities': [User, Content]
     });
-    return db;
+    return mysql;
   }
    
 }

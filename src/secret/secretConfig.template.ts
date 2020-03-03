@@ -6,5 +6,9 @@ export const SecretConfig = {
   rsa: {
     private: '',
     public: ''
+  },
+  tencentCOS: {
+    SecretId: '',
+    SecretKey: ''
   }
 };

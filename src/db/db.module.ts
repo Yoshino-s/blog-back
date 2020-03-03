@@ -1,9 +1,9 @@
 import { Module, Global } from '@nestjs/common';
-import { DBService } from './db.service';
+import { MysqlService } from './mysql.service';
 
 @Global()
 @Module({
-  providers: [DBService],
-  exports: [DBService]
+  providers: [MysqlService],
+  exports: [MysqlService]
 })
 export class DbModule {}

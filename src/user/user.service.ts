@@ -8,7 +8,7 @@ import { MailerService } from '@nest-modules/mailer';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('DB') private readonly connection: Connection,
+    @Inject('MYSQL') private readonly connection: Connection,
     private readonly mailService: MailerService
   ) { }
   

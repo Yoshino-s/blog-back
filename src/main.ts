@@ -5,25 +5,13 @@ import {
   NestFastifyApplication
 } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
-/*
-import fastifyCookie from 'fastify-cookie';
-import fastifySession from 'fastify-session';
-import redis from 'redis';
-import { RedisConfig } from './config';
-*/
+import * as FastifyMultipart from 'fastify-multipart';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({}));
-  
-  /*const client = redis.createClient(RedisConfig.port, RedisConfig.host, {
-    password: RedisConfig.password
-  });
+  const fAdapt = new FastifyAdapter();
+  fAdapt.register(FastifyMultipart);
 
-  app.register(fastifyCookie);
-  app.register(fastifySession, {
-    secret: ['111', '222'],
-    store: client
-  });*/
+  const app = await NestFactory.create<NestFastifyApplication>(AppModule, fAdapt);
 
   const options = new DocumentBuilder()
     .setTitle('Cats example')

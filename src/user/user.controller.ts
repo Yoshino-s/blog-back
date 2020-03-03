@@ -1,4 +1,4 @@
-import { Controller, Body, Post, UsePipes, ValidationPipe, BadRequestException, Get, Param, UseGuards, Req } from '@nestjs/common';
+import { Controller, Body, Post, UsePipes, ValidationPipe, BadRequestException, Get, Param, UseGuards, Req, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './DTO/register-user.dto';
 import { ApiCreatedResponse, ApiBadRequestResponse } from '@nestjs/swagger';
@@ -12,7 +12,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly authService: AuthService
   ) { };
-
+  
   @Post('register')
   @UsePipes(new ValidationPipe({ transform: true }))
   @ApiCreatedResponse({ description: 'Created.'})
@@ -31,7 +31,7 @@ export class UserController {
   @Post('login')
   async login(@Req() req) {
     const user = req.user as User;
-    return await this.authService.login(user);
+    return await this.authService.getJwt(user);
   }
 
   @UseGuards(AuthGuard('jwt'))
