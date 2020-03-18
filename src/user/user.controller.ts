@@ -1,10 +1,12 @@
-import { Controller, Body, Post, UsePipes, ValidationPipe, BadRequestException, Get, Param, UseGuards, Req, UploadedFile } from '@nestjs/common';
+import { Controller, Body, Post, UsePipes, ValidationPipe, BadRequestException, Get, Param, UseGuards, Req, UploadedFile, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserDto } from './DTO/register-user.dto';
-import { ApiCreatedResponse, ApiBadRequestResponse } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiBadRequestResponse, ApiOkResponse, ApiUnauthorizedResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../entity/User.entity';
+import { LoginUserDto } from './DTO/login-user.dto';
+import { FastifyRequest } from 'fastify';
+import { LoginReturnDTO } from './DTO/login.return.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,22 +29,31 @@ export class UserController {
     }
   }
 
-  @UseGuards(AuthGuard('local'))
+  
   @Post('login')
-  async login(@Req() req) {
-    const user = req.user as User;
-    return await this.authService.getJwt(user);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  @UseGuards(AuthGuard('local'))
+  @ApiCreatedResponse({
+    description: 'Login success.',
+    type: LoginReturnDTO
+  })
+  @ApiUnauthorizedResponse({description: 'Unauthorized.'})
+  async login(@Body() loginUserDto: LoginUserDto, @Req() req: FastifyRequest) {
+    return {
+      jwt: await this.authService.getJwt((req as any).user)
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
+  @ApiBearerAuth()
   getProfile(@Req() req) {
     return req.user;
   }
 
   @Get('verify/:code')
   @UsePipes(new ValidationPipe({ transform: true }))
-  @ApiCreatedResponse({ description: 'Verify success.' })
+  @ApiOkResponse({ description: 'Verify success.' })
   @ApiBadRequestResponse({ description: 'This code has been used or not exist.' })
   async verify(@Param() params: { code: string }) {
     const r = await this.userService.verify(params.code);

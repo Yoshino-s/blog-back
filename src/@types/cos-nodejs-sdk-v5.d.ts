@@ -293,8 +293,8 @@ declare module 'cos-nodejs-sdk-v5' {
         FilePath: string
       })[];
       SliceSize: number;
-      onProgress: COS.ProgressCallback;
-      onFileFinish: (err: COS.Err, data: {
+      onProgress?: COS.ProgressCallback;
+      onFileFinish?: (err: COS.Err, data: {
         ETag: string;
         Location: string;
         VersionId?: string;
@@ -303,7 +303,7 @@ declare module 'cos-nodejs-sdk-v5' {
         }) => void;
     }, callback: COS.Callback<{
         files: {
-          err: COS.Err;
+          err?: COS.Err;
           data: {
             ETag: string;
             Location: string;
@@ -312,7 +312,7 @@ declare module 'cos-nodejs-sdk-v5' {
           options: COS.ObjectOptions & {
             FilePath: string
           }
-        }
+        }[]
       }>): void;
     
     cancelTask: COS.TaskCallback;

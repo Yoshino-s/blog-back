@@ -17,7 +17,17 @@ export type File = {
   field: string;
   filename: string;
   encoding: string;
-  mimetype: string;
+  mimeType: string;
   tmpFilename: string;
   tmpFilePath: string;
+  ETag: string;
+}
+
+export type UploadedFile = {
+  filename: string;
+  mimeType: string;
+  url: string;
+  key: string;
+  ETag: string;
+  field: string;
 }

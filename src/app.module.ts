@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { UtilsController } from './utils/utils.controller';
 import { UserModule } from './user/user.module';
 import { DbModule } from './db/db.module';
 import { MailerModule } from '@nest-modules/mailer';
 import { SecretConfig } from './secret/secretConfig';
 import { FileModule } from './file/file.module';
+import { ContentModule } from './content/content.module';
 
 @Module({
   imports: [
-    UserModule, DbModule,
+    UserModule, ContentModule,
+    DbModule,
     MailerModule.forRoot({
       transport: {
         host: 'smtp.126.com',
@@ -34,7 +35,7 @@ import { FileModule } from './file/file.module';
       }
     })
   ],
-  controllers: [UtilsController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

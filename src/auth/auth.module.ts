@@ -5,6 +5,7 @@ import { LocalStrategy } from './local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { SecretConfig } from '../secret/secretConfig';
 import { JwtStrategy } from './jwt.strategy';
+import { DbModule } from '../db/db.module';
 
 @Module({
   imports: [

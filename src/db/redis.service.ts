@@ -1,9 +1,9 @@
 import { FactoryProvider } from '@nestjs/common';
-import { createClient } from 'redis';
+import { createClient, RedisClient } from 'redis';
 import { RedisConfig } from '../config';
 
 export const RedisService: FactoryProvider = {
-  provide: 'REDIS',
+  provide: RedisClient,
   useFactory: async () => {
     const redis = createClient({
       host: RedisConfig.host,

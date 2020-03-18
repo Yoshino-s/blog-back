@@ -14,5 +14,6 @@ export const MysqlConfig = {
 
 export const GlobalConfig = {
   key: 'niiiiii',
-  salt: '5a1t'
+  salt: '5a1t',
+  jwtExpireTime: 60 * 20
 }

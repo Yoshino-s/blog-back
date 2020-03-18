@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
 import { Base } from './Base';
 import { User } from './User.entity';
+import { Paragraph } from './Paragraph.entity';
 
 enum Access {
   All, // Everyone
@@ -19,6 +20,18 @@ export class Content extends Base {
   
   @Column({ unique: true, nullable: false })
   key: string;
+
+  @Column({ unique: true, nullable: false })
+  remoteAddress: string;
+
+  @Column({ unique: true, nullable: false })
+  ETag: string;
+
+  @Column({ nullable: false })
+  mimeType: string;
+
+  @Column({ type: 'json', default: '{}' })
+  metadata: Record<string, any>;
   
   @Column({
     type: 'enum',

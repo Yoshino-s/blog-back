@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { User } from '../entity/User.entity';
 import { createHmac } from 'crypto';
@@ -8,7 +8,7 @@ import { MailerService } from '@nest-modules/mailer';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('MYSQL') private readonly connection: Connection,
+    private readonly connection: Connection,
     private readonly mailService: MailerService
   ) { }
   
