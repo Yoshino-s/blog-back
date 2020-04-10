@@ -24,7 +24,7 @@ export class COSService {
           resolve({
             filename: file.filename,
             mimeType: file.mimeType,
-            url: dat.Location,
+            url: 'https://'+dat.Location,
             ETag: file.ETag,
             key: file.tmpFilename,
             field: file.field
@@ -36,6 +36,7 @@ export class COSService {
   async saveFiles(files: File[]) {
     if (files.length === 0)
       return [];
+    console.log(this.config);
     return new Promise<UploadedFile[]>((resolve, reject) => {
       this.cos.uploadFiles({
         files: files.map(file => ({
@@ -62,7 +63,7 @@ export class COSService {
               reject(f.err);
             else {
               const t = res.find(fi => fi.key === f.options.Key);
-              t.url = f.data.Location;
+              t.url = 'https://'+f.data.Location;
             }
           });
           resolve(res);

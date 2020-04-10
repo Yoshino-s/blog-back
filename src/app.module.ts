@@ -3,7 +3,6 @@ import { UserModule } from './user/user.module';
 import { DbModule } from './db/db.module';
 import { MailerModule } from '@nest-modules/mailer';
 import { SecretConfig } from './secret/secretConfig';
-import { FileModule } from './file/file.module';
 import { ContentModule } from './content/content.module';
 
 @Module({
@@ -24,14 +23,6 @@ import { ContentModule } from './content/content.module';
           name: 'Yoshino-s Server Verify Service',
           address: SecretConfig.mail.user
         }
-      }
-    }),
-    FileModule.register({
-      COSConfig: {
-        secretId: SecretConfig.tencentCOS.SecretId,
-        secretKey: SecretConfig.tencentCOS.SecretKey,
-        bucket: 'test-1300262299',
-        regionCode: 'ap-shanghai'
       }
     })
   ],

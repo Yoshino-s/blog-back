@@ -10,7 +10,7 @@ import { SecretConfig } from '../secret/secretConfig.template';
     COSConfig: {
       secretId: SecretConfig.tencentCOS.SecretId,
       secretKey: SecretConfig.tencentCOS.SecretKey,
-      bucket: 'test-1300262299',
+      bucket: 'blog-1300262299',
       regionCode: 'ap-shanghai'
     }
   })],

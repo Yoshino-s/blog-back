@@ -10,8 +10,10 @@ import * as FastifyMultipart from 'fastify-multipart';
 async function bootstrap() {
   const fAdapt = new FastifyAdapter();
   fAdapt.register(FastifyMultipart);
+  fAdapt.enableCors({});
 
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, fAdapt);
+
 
   const options = new DocumentBuilder()
     .setTitle('Cats example')

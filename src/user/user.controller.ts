@@ -6,7 +6,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../auth/auth.service';
 import { LoginUserDto } from './DTO/login-user.dto';
 import { FastifyRequest } from 'fastify';
-import { LoginReturnDTO } from './DTO/login.return.dto';
+import { User } from '../entity/User.entity';
 
 @Controller('user')
 export class UserController {
@@ -20,7 +20,7 @@ export class UserController {
   @ApiCreatedResponse({ description: 'Created.'})
   @ApiBadRequestResponse({description: 'Username existed.'})
   async register(@Body() registerUserDto: RegisterUserDto) {
-    const res = await this.userService.register(registerUserDto.name, registerUserDto.password, registerUserDto.email);
+    const res = await this.userService.register(registerUserDto.username, registerUserDto.password, registerUserDto.email);
     if (!res) {
       throw new BadRequestException('Username existed.');
     }
@@ -33,22 +33,17 @@ export class UserController {
   @Post('login')
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseGuards(AuthGuard('local'))
-  @ApiCreatedResponse({
-    description: 'Login success.',
-    type: LoginReturnDTO
-  })
   @ApiUnauthorizedResponse({description: 'Unauthorized.'})
   async login(@Body() loginUserDto: LoginUserDto, @Req() req: FastifyRequest) {
-    return {
-      jwt: await this.authService.getJwt((req as any).user)
-    }
+    const jwt = await this.authService.getJwt((req as any).user);
+    return { jwt };
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
   @ApiBearerAuth()
   getProfile(@Req() req) {
-    return req.user;
+    return req.user as User;
   }
 
   @Get('verify/:code')

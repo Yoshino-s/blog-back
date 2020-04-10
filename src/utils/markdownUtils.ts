@@ -1,8 +1,20 @@
-import * as MarkdownIt from 'markdown-it';
-import { Content } from '../entity/Content.entity';
-import { randomBytes } from 'crypto';
+import { merge } from 'lodash';
 
-type MetadataAdapter = (metadata: string) => object | null;
+export interface Metadata {
+  title?: string;
+  tags?: string[];
+  category?: string;
+  description?: string;
+  preview?: string;
+  author?: string;
+  headPicture?: string;
+}
+
+type MetadataAdapter = (metadata: string) => Metadata | null;
+
+function has<K extends string|number|symbol, V>(o: object, k: K, v?: V | {new(): V}): o is {[P in K]: V}  {
+  return o.hasOwnProperty(k) && v === undefined || (v instanceof Function ? (o as any)[k] instanceof v : Object.getPrototypeOf((o as any)[k]) === Object.getPrototypeOf(v))
+}
 
 const parseJSON: MetadataAdapter = (metadata: string) => {
   try {
@@ -13,45 +25,22 @@ const parseJSON: MetadataAdapter = (metadata: string) => {
 }
 export const adapters: MetadataAdapter[] = [parseJSON];
 const parseMetadata: MetadataAdapter = (metadata: string) => {
-  return adapters.reduce((p, a) => p ? p : a(metadata), null) || {};
+  const res = adapters.reduce((p, a) => p ? p : a(metadata), null) || {};
+
+  return null;
 }
-
-const MDI = new MarkdownIt();
-
-const _normalizeLink = MDI.normalizeLink;
 
 const metadataRegexp = /^---\s+([^]*)---/g;
 
-export function parse(md: string): {metadata: object, result: string} {
-  const res = {
-    metadata: {},
-    result: ''
-  }
+export function extractMetadata(md: string): { metadata: Metadata, md: string } {
   const m = metadataRegexp.exec(md);
-  if (m) {
-    res.metadata = parseMetadata(m[1]);
-    md = md.replace(metadataRegexp, '');
-  }
-  res.result = MDI.render(md);
-  return res;
-}
-
-export function extractMetadata(md: string): { metadata: object, result: string } {
-  const m = metadataRegexp.exec(md);
-  let metadata = {};
+  let metadata: Metadata = {};
   if (m) {
     metadata = parseMetadata(m[1]);
     md = md.replace(metadataRegexp, '');
   }
   return {
     metadata,
-    result: md
+    md
   }
-}
-
-export function preProcessMarkdown(md: string, unresolved: Map<string, Content>, id: string) {
-  for (const [k, v] of unresolved) {
-    md = md.replace(k, `http://${id}.replace/${v.ETag}`);
-  }
-  return md;
 }

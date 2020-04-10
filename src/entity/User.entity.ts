@@ -1,6 +1,6 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, OneToMany  } from 'typeorm';
 import { Base } from './Base';
-import { Content } from './Content.entity';
+import { Paragraph } from './Paragraph.entity';
 
 export enum USER_GROUP {
   NORMAL, ADMIN, ROOT
@@ -26,13 +26,19 @@ export class User extends Base {
   @Column({type: 'varchar', length: 100, default: ''})
   introduction: string;
 
+  @Column({type: 'varchar', length: 100, default: ''})
+  avatar: string;
+
   @Column({
     type: 'enum',
     enum: USER_GROUP,
     default: USER_GROUP.NORMAL
   })
   userGroup: USER_GROUP;
+  
+  @OneToMany(() => Paragraph, paragraph => paragraph.postBy)
+  paragraphs: Paragraph[];
+  @CreateDateColumn() createdAt: string
 
-  @OneToMany(() => Content, content => content.postBy)
-  contents: Content[];
+  @UpdateDateColumn() updatedAt: string
 }

@@ -1,26 +1,46 @@
-import { Entity, Column, ManyToMany, JoinTable, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, ManyToMany, ManyToOne, JoinTable, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 import { Base } from './Base';
-import { Content } from './Content.entity';
+import { Tag } from './Tag.entity';
+import { Category } from './Category.entity';
+import { User } from './User.entity';
 
 @Entity()
 export class Paragraph extends Base {
+  @Index({fulltext: true})
   @Column({ type: 'varchar', length: 255 , default:''})
   title: string;
+  
+  @Index({fulltext: true})
+  @Column({ type: 'varchar', length: 255 , default:''})
+  description: string;
 
-  @Column({ type: 'json', default: '{}'})
-  metadata: Record<string, any>;
+  @Column({ type: 'text', default:''})
+  preview: string;
 
   @Column({ unique: true, nullable: false })
   Md5: string;
 
-  @OneToOne(() => Content)
-  @JoinColumn()
-  paragraph: Content;
+  
+  @Column({ type: 'varchar', length: 255, default:''})
+  paragraphLink: string;
 
-  @ManyToMany(() => Content)
+  @Column({ type: 'longtext', nullable: false })
+  paragraph: string;
+
+  @Column({ type: 'varchar', length: 255, default:''})
+  headPicture: string;
+
+  @ManyToMany(() => Tag, tag => tag.paragraphs)
   @JoinTable()
-  media: Content[];
+  tags: Tag[];
 
-  @ManyToOne(() => Content)
-  headPicture: Content;
+  @ManyToOne(() => Category)
+  category: Category;
+
+  @ManyToOne(() => User)
+  postBy: User;
+  
+  @CreateDateColumn() createdAt: string
+
+  @UpdateDateColumn() updatedAt: string
 }

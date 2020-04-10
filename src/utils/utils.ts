@@ -20,3 +20,8 @@ export const AsyncUtils = {
     return (await Promise.all(dat.map(async (v, i, a) => (await func(v, i, a))?v:undefined))).filter(Boolean);
   }
 }
+
+export function exclude<T, K extends keyof T>(obj: T, key: K): T & { [key in K]: never } {
+  delete obj[key];
+  return obj as any;
+}
